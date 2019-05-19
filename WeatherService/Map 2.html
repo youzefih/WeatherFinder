@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+    google.charts.load('current', { 'packages': ['map'] });
+
+    // event handler to read the file and draw the map
+	function handleFileSelect(evt) {
+	    var file = evt.target.files; // FileList object
+		var reader = new FileReader();
+	      // Read in the image file as a data URL.
+	    reader.onload = (function(theFile) {
+
+	    	return function(e) {  
+
+	        	var str = e.target.result;
+	
+	        	// get the json array itself, result is a string
+	        	try {
+		        	var json = JSON.parse(str.replace("\n",""));
+		    	    var data = google.visualization.arrayToDataTable(json);
+	        	} catch (ex) {
+	        		alert("Invalid data file");
+	        		return;
+	        	}
+
+	    	    var options = {
+	       	    	showTooltip: true,
+	       	    	showInfoWindow: true
+	       	    };
+	
+	       	    var map = new google.visualization.Map(document.getElementById('chart_div'));
+	       	    map.draw(data, options);
+            };
+	    })(file[0]);
+
+    	reader.readAsText(file[0]);
+	}
+  
+  function setup() {
+	  // Add event listener to process chosen file
+	  var e = document.getElementById('selfile').addEventListener('change', handleFileSelect, false); // Last parameter prevents event bubbling
+  }
+
+  window.onload = setup;
+  
+  </script>
+  </head>
+  <body>
+	<input type="file" id="selfile" name="selfile" />
+    <div id="chart_div"></div>
+  </body>
+</html>
