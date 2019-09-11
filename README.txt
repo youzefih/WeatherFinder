@@ -1,0 +1,1 @@
+This Java application uses realtimeweb api to find the best city to travel to based on the users input of favorite region and favorite type of weather, and stores the results in a JSON file.
